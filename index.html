@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>NBE CX Assessment</title>
+<meta name="description" content="Customer Experience Excellence self-assessment – National Bank of Egypt">
+<meta name="theme-color" content="#00512F">
+<link rel="icon" href="nbe-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{background:#00512F;font-family:'IBM Plex Sans Arabic',system-ui,sans-serif;color:#fff;-webkit-text-size-adjust:100%}
+button{font-family:inherit;-webkit-tap-highlight-color:transparent;cursor:pointer}
+input::placeholder{color:#8A988F}
+.app{width:100%;max-width:520px;margin:0 auto;height:100vh;height:100dvh;overflow:hidden;position:relative;background:#00512F;display:flex;flex-direction:column}
+.top{padding:max(16px,env(safe-area-inset-top)) 22px 10px;display:flex;align-items:center;gap:10px;flex:none}
+.ticks{flex:1;display:flex;gap:3px}.ticks div{flex:1;height:4px;border-radius:2px}
+.bank{flex:1;font-size:13px;font-weight:500;opacity:.85}
+.lang{border:0;background:rgba(255,255,255,.14);color:#fff;font-weight:600;font-size:13px;height:34px;min-width:44px;border-radius:17px;padding:0 12px}
+.main{flex:1;overflow-y:auto;display:flex;flex-direction:column}
+.intro{padding:24px 24px 30px;display:flex;flex-direction:column;gap:22px;flex:1}
+.logo{width:96px;height:96px;border-radius:24px;background:#fff;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.logo img{width:96px;height:96px;object-fit:contain}
+.title{font-size:38px;line-height:1.08;font-weight:700;text-wrap:pretty}
+.lead{font-size:16px;line-height:1.55;color:#CFE3D7;text-wrap:pretty}
+.scale{display:flex;align-items:stretch;gap:10px;font-size:13px;line-height:1.35}
+.scale .st{flex:1;border-radius:14px;padding:12px;font-weight:600;color:#0F2A1C}
+.scale .dots{display:flex;align-items:center;gap:4px}.scale .dots i{width:6px;height:6px;border-radius:3px}
+.howto{font-size:14px;line-height:1.5;color:#CFE3D7}
+.name{height:50px;border:1px solid rgba(255,255,255,.3);border-radius:14px;padding:0 16px;font:400 16px 'IBM Plex Sans Arabic',sans-serif;background:rgba(255,255,255,.08);color:#fff;outline:none}
+.name:focus{border-color:#F7A800}
+.primary{height:56px;border:0;border-radius:28px;background:#F7A800;color:#0F2A1C;font-weight:700;font-size:17px}
+.q{padding:10px 18px 22px;display:flex;flex-direction:column;gap:10px;flex:1}
+.qhead{display:flex;align-items:center;justify-content:space-between}
+.qlabel{font-size:14px;font-weight:600;color:#CFE3D7}
+.back{border:0;background:transparent;color:#fff;font-weight:500;font-size:14px;height:44px;opacity:.85}
+.stmt{border-radius:20px;padding:18px;display:flex;flex-direction:column;gap:6px;color:#0F2A1C}
+.stmt .let{font-size:28px;font-weight:700;line-height:1}
+.stmt .txt{font-size:17px;line-height:1.45;font-weight:500;text-wrap:pretty}
+.choices{display:flex;flex-direction:column;padding:4px 0}
+.choice{display:flex;align-items:center;gap:14px;min-height:46px;border:0;background:transparent;color:#fff;padding:0 8px;font-weight:500;font-size:15px;text-align:start}
+.choice .slot{width:28px;display:flex;justify-content:center;flex:none}
+.choice .dot{border-radius:50%;box-sizing:border-box;transition:all .15s}
+.res{padding:16px 22px 28px;display:flex;flex-direction:column;gap:18px}
+.big{font-size:72px;font-weight:700;line-height:1;color:#F7A800}
+.dim{display:flex;flex-direction:column;gap:10px;padding-top:16px;border-top:1px solid rgba(255,255,255,.18)}
+.dimhead{display:flex;align-items:baseline;justify-content:space-between;gap:8px;font-size:18px}
+.cells{display:flex;gap:3px}.cells div{flex:1;height:14px;border-radius:3px}
+.bandrow{display:flex;align-items:center;gap:8px}.bandrow i{width:10px;height:10px;border-radius:5px}
+.dimtxt{font-size:14px;line-height:1.55;color:#DCEBE2;text-wrap:pretty}
+.actions{display:flex;gap:8px;margin-top:6px}
+.actions button{flex:1;height:52px;border-radius:26px;font-size:15px}
+.dl{border:0;background:#F7A800;color:#0F2A1C;font-weight:700}
+.sh{border:1.5px solid rgba(255,255,255,.5);background:transparent;color:#fff;font-weight:600}
+.retake{height:44px;border:0;background:transparent;color:#CFE3D7;font-weight:500;font-size:14px}
+.toast{position:absolute;left:20px;right:20px;bottom:28px;background:#fff;color:#0F2A1C;border-radius:14px;padding:12px 16px;font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+<script>
+const Q=[
+{en:["I try to engage each customer","I'm here to do a job not to make friends"],ar:["أحرص على التفاعل مع كل عميل","أنا هنا لأؤدي عملي، لا لأكوّن صداقات"]},
+{en:["I can't go against the rules just because it will make one person's life easier","If it helps me get my job done, and it makes my customer happy, why shouldn't I bend the rules occasionally?"],ar:["لا يمكنني مخالفة القواعد لمجرد أن ذلك سيسهّل الأمر على شخص واحد","إذا كان ذلك يساعدني على إنجاز عملي ويُسعد عميلي، فلماذا لا أتجاوز القواعد أحياناً؟"]},
+{en:["I listen to my customers to improve how I do things","I know my job and what is expected of me. I don't need other people telling me how to do things I already know how to do."],ar:["أستمع إلى عملائي لأحسّن طريقة عملي","أعرف عملي وما هو متوقع مني، ولا أحتاج إلى من يخبرني كيف أؤدي ما أتقنه بالفعل"]},
+{en:["Having a pleasant relationship with each customer is extremely important","Customers who take up my time with idle chatter drive me crazy"],ar:["بناء علاقة طيبة مع كل عميل أمر بالغ الأهمية","العملاء الذين يضيّعون وقتي في أحاديث جانبية يثيرون أعصابي"]},
+{en:["If I make a mistake, I'd rather tell my customer it was my mistake","I don't want customers to know I make mistakes"],ar:["إذا أخطأت، أفضّل أن أعترف لعميلي بأن الخطأ مني","لا أريد أن يعرف العملاء أنني أخطئ"]},
+{en:["When we get a complaint, I automatically look for ways to correct things","Customers who complain drive me nuts"],ar:["عندما تصلنا شكوى، أبحث تلقائياً عن طرق لتصحيح الأمور","العملاء الذين يشتكون يُفقدونني صوابي"]},
+{en:["Most customers value people they can trust more than they do efficiency","Efficiency is the major factor in most customers' satisfaction"],ar:["معظم العملاء يقدّرون الأشخاص الذين يثقون بهم أكثر من تقديرهم للكفاءة","الكفاءة هي العامل الأهم في رضا معظم العملاء"]},
+{en:["I like my job and love my company","It's a living"],ar:["أحب عملي وأحب مؤسستي","إنها مجرد وسيلة لكسب الرزق"]},
+{en:["I greet every customer with a warm smile and a pleasant hello","My smiling and saying hello don't help me get the job done"],ar:["أستقبل كل عميل بابتسامة دافئة وتحية لطيفة","ابتسامتي وتحيتي لا تساعدانني على إنجاز العمل"]},
+{en:["If a customer genuinely isn't happy with something, I will do whatever I can, within my means, to make it better for him or her","I'm doing the job to the best of my ability. I sometimes have to deal with things I'm not happy with — so why can't my customers?"],ar:["إذا كان العميل غير راضٍ فعلاً عن أمر ما، سأبذل كل ما بوسعي، في حدود إمكانياتي، لتحسينه","أؤدي عملي بأفضل ما أستطيع، وأنا أيضاً أتعامل أحياناً مع أمور لا تُرضيني، فلماذا لا يفعل عملائي ذلك؟"]},
+{en:["I will never say anything that might mislead a customer","I know how to exaggerate or 'spin' things just a little from time to time"],ar:["لن أقول أبداً شيئاً قد يضلّل العميل","أعرف كيف أبالغ أو «أجمّل» الأمور قليلاً من حين لآخر"]},
+{en:["No matter how bad a mood I'm in, I won't let customers see it","Everyone gets in bad moods, I can't just fake a happy face. I hate people who fake being happy"],ar:["مهما كان مزاجي سيئاً، لن أدع العملاء يلاحظون ذلك","الجميع يمر بمزاج سيئ، ولا أستطيع التظاهر بالسعادة. أكره من يتصنّعون السعادة"]},
+{en:["I try to use customers' names whenever possible","Using customers' names is uncomfortable and unnecessary"],ar:["أحرص على مناداة العملاء بأسمائهم كلما أمكن","مناداة العملاء بأسمائهم أمر محرج وغير ضروري"]},
+{en:["The way I conduct myself at work is the same way I conduct myself in my personal life","I am quite different at work than I am in my personal life"],ar:["أتصرف في العمل بنفس الطريقة التي أتصرف بها في حياتي الشخصية","أنا مختلف تماماً في العمل عمّا أنا عليه في حياتي الشخصية"]},
+{en:["Making a customer comfortable is very important to me","Getting things done is very important to me"],ar:["راحة العميل أمر مهم جداً بالنسبة لي","إنجاز المهام أمر مهم جداً بالنسبة لي"]}
+];
+// answer key: Q1,4,7,10,13 = RB · Q2,5,8,11,14 = Integrity · Q3,6,9,12,15 = Customer Focus
+const DIM_OF=i=>['rb','in','cf'][i%3];
+const ORDER=['cf','in','rb'];
+const TXT={
+cf:{en:{name:'Customer Focus',high:'A higher Customer-focus score means that your Customers believe that you genuinely care about them, and that they are important to you.',mid:'A moderate Customer-focus score means that Customers might be getting mixed messages from you. They aren’t sure which is more important to you – their needs or yours.',low:'Customers get the sense that you would rather they weren’t there. The message you are sending is that you simply don’t care about them or their business.'},
+ ar:{name:'التركيز على العميل',high:'تعني الدرجة المرتفعة في التركيز على العميل أن عملاءك يشعرون بأنك تهتم بهم حقاً وأنهم مهمّون بالنسبة لك.',mid:'تعني الدرجة المتوسطة أن العملاء قد يتلقّون منك رسائل متضاربة؛ فهم غير متأكدين أيهما أهم لديك: احتياجاتهم أم احتياجاتك.',low:'يشعر العملاء بأنك تفضّل لو لم يكونوا موجودين. الرسالة التي ترسلها هي أنك ببساطة لا تهتم بهم ولا بأعمالهم.'}},
+in:{en:{name:'Integrity',high:'A higher integrity score means that your Customers typically trust you, and have confidence in the things you say and do. Your reputation is very important to you, and people believe that you stand by your word.',mid:'A moderate integrity score means that, while Customers generally trust you, they are still a little worried of your motivations. They may be getting mixed messages from you.',low:'Customers are often uncomfortable working with you. They will question your motivation and the things you say. Don’t forget that people respect people who are passionate about what they do.'},
+ ar:{name:'النزاهة',high:'تعني الدرجة المرتفعة في النزاهة أن عملاءك يثقون بك عادةً ولديهم ثقة فيما تقوله وتفعله. سمعتك مهمة جداً بالنسبة لك، والناس يؤمنون بأنك تفي بكلمتك.',mid:'تعني الدرجة المتوسطة أنه رغم ثقة العملاء بك عموماً، إلا أنهم ما زالوا قلقين بعض الشيء من دوافعك، وقد يتلقّون منك رسائل متضاربة.',low:'غالباً ما يشعر العملاء بعدم الارتياح في التعامل معك، وسيشككون في دوافعك وفيما تقوله. لا تنسَ أن الناس يحترمون من يتحمّسون لما يفعلونه.'}},
+rb:{en:{name:'Relationship Building',high:'A higher relationship-building score means that you are doing many of the right things to build strong relationships with customers.',mid:'A moderate relationship-building score means that, while you are doing some things that build relationships, you are doing others that are working against you.',low:'Try focusing less on what you think is good for you in the short term, and more what is good for everyone in the long term.'},
+ ar:{name:'بناء العلاقات',high:'تعني الدرجة المرتفعة في بناء العلاقات أنك تقوم بالكثير من الأمور الصحيحة لبناء علاقات قوية مع العملاء.',mid:'تعني الدرجة المتوسطة أنك تقوم ببعض الأمور التي تبني العلاقات، لكنك تقوم بأخرى تعمل ضدك.',low:'حاول أن تركّز بدرجة أقل على ما تراه مفيداً لك على المدى القصير، وبدرجة أكبر على ما هو مفيد للجميع على المدى الطويل.'}}
+};
+const BAND={high:'#1F9D55',mid:'#F2B705',low:'#D8352A'};
+const T={
+en:{other:'ع',bank:'National Bank of Egypt',title:'Customer Experience Excellence',intro:'You’ll see 15 pairs of statements. For each pair, pick how strongly you lean toward A or B. There are no right answers, only honest ones.',howTo:'Pick the point between the two statements that sounds most like you.',namePh:'Your name (optional)',start:'Start',back:'Back',stA:'STATEMENT A',stB:'STATEMENT B',letA:'A',letB:'B',choices:['Agree with A','More A than B','More B than A','Agree with B'],q:(n,t)=>`Question ${n} of ${t}`,resultsFor:'Results',totalLabel:'Your overall customer experience score',bands:{high:'Strong',mid:'Moderate',low:'Needs focus'},download:'Download',share:'Share',retake:'Retake the assessment',copied:'Result copied to clipboard',saved:'Result card saved'},
+ar:{other:'EN',bank:'البنك الأهلي المصري',title:'التميّز في تجربة العميل',intro:'ستظهر لك ١٥ عبارة مزدوجة. في كل مرة، اختر مدى ميلك إلى العبارة (أ) أو (ب). لا توجد إجابات صحيحة، فقط إجابات صادقة.',howTo:'اختر النقطة بين العبارتين الأقرب إلى شخصيتك.',namePh:'اسمك (اختياري)',start:'ابدأ',back:'رجوع',stA:'العبارة (أ)',stB:'العبارة (ب)',letA:'أ',letB:'ب',choices:['أوافق على (أ)','أميل إلى (أ)','أميل إلى (ب)','أوافق على (ب)'],q:(n,t)=>`السؤال ${n} من ${t}`,resultsFor:'النتائج',totalLabel:'درجتك الإجمالية في تجربة العميل',bands:{high:'قوي',mid:'متوسط',low:'يحتاج إلى تركيز'},download:'تنزيل',share:'مشاركة',retake:'إعادة التقييم',copied:'تم نسخ النتيجة',saved:'تم حفظ بطاقة النتيجة'}
+};
+const urlLang=new URLSearchParams(location.search).get('lang');
+const s={lang:urlLang==='ar'?'ar':'en',screen:'intro',idx:0,answers:Array(15).fill(null),name:'',toast:''};
+const app=document.getElementById('app');
+let advT,toastT;
+const esc=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const num=n=>s.lang==='ar'?Number(n).toLocaleString('ar-EG'):String(n);
+const band=v=>v>=12?'high':v>=7?'mid':'low';
+function scores(){const r={cf:0,in:0,rb:0};s.answers.forEach((v,i)=>{if(v!=null)r[DIM_OF(i)]+=3-v;});return r;}
+
+function render(){
+ const L=s.lang,t=T[L];
+ document.documentElement.lang=L;document.documentElement.dir=L==='ar'?'rtl':'ltr';
+ const isQ=s.screen==='q';
+ let top=isQ
+  ?`<div class="ticks">${Array.from({length:15},(_,i)=>`<div style="background:${i<s.idx?'#F7A800':i===s.idx?'#fff':'rgba(255,255,255,.2)'}"></div>`).join('')}</div>`
+  :`<div class="bank">${t.bank}</div>`;
+ top+=`<button class="lang" data-a="lang">${t.other}</button>`;
+ let body='';
+ if(s.screen==='intro'){
+  body=`<div class="intro">
+<div class="logo"><img src="nbe-logo.png" alt="NBE"></div>
+<div class="title">${t.title}</div>
+<div class="lead">${t.intro}</div>
+<div class="scale"><div class="st" style="background:#fff">${t.stA}</div><div class="dots"><i style="background:#fff"></i><i style="background:#C9DCD0"></i><i style="background:#F7C766"></i><i style="background:#F7A800"></i></div><div class="st" style="background:#F7A800">${t.stB}</div></div>
+<div class="howto">${t.howTo}</div>
+<input class="name" id="name" value="${esc(s.name)}" placeholder="${t.namePh}" autocomplete="name">
+<div style="flex:1"></div>
+<button class="primary" data-a="start">${t.start}</button></div>`;
+ }else if(isQ){
+  const q=Q[s.idx][L],cur=s.answers[s.idx];
+  body=`<div class="q">
+<div class="qhead"><div class="qlabel">${t.q(num(s.idx+1),num(15))}</div><button class="back" data-a="back">${t.back}</button></div>
+<div class="stmt" style="background:#fff"><div class="let" style="color:#006B3F">${t.letA}</div><div class="txt">${q[0]}</div></div>
+<div class="choices">${t.choices.map((label,v)=>{const on=cur===v,d=on?24:14;
+ return `<button class="choice" data-a="pick" data-v="${v}"><span class="slot"><span class="dot" style="width:${d}px;height:${d}px;background:${on?'#F7A800':'transparent'};border:2px solid ${on?'#F7A800':'rgba(255,255,255,.55)'}"></span></span><span style="opacity:${on?1:.8}">${label}</span></button>`;}).join('')}</div>
+<div class="stmt" style="background:#F7A800"><div class="let" style="color:#7A4300">${t.letB}</div><div class="txt">${q[1]}</div></div></div>`;
+ }else{
+  const sc=scores(),tot=sc.cf+sc.in+sc.rb;
+  body=`<div class="res">
+<div style="display:flex;flex-direction:column;gap:4px"><div style="font-size:14px;color:#CFE3D7">${t.resultsFor} ${s.name?'· '+esc(s.name):''}</div>
+<div style="display:flex;align-items:baseline;gap:6px"><span class="big">${num(tot)}</span><span style="font-size:22px;color:#CFE3D7">/ ${num(45)}</span></div></div>
+${ORDER.map(d=>{const b=band(sc[d]),c=BAND[b];return `<div class="dim">
+<div class="dimhead"><div style="font-weight:600">${TXT[d][L].name}</div><div style="font-weight:700">${num(sc[d])}<span style="font-weight:400;color:#CFE3D7;font-size:14px"> / ${num(15)}</span></div></div>
+<div class="cells">${Array.from({length:15},(_,i)=>`<div style="background:${i<sc[d]?c:'rgba(255,255,255,.14)'}"></div>`).join('')}</div>
+<div class="bandrow"><i style="background:${c}"></i><span style="font-size:13px;font-weight:700">${t.bands[b]}</span></div>
+<div class="dimtxt">${TXT[d][L][b]}</div></div>`;}).join('')}
+<div class="actions"><button class="dl" data-a="download">${t.download}</button><button class="sh" data-a="share">${t.share}</button></div>
+<button class="retake" data-a="restart">${t.retake}</button></div>`;
+ }
+ app.innerHTML=`<div class="top">${top}</div><div class="main" id="main">${body}</div>${s.toast?`<div class="toast">${esc(s.toast)}</div>`:''}`;
+}
+
+function flash(msg){s.toast=msg;render();clearTimeout(toastT);toastT=setTimeout(()=>{s.toast='';render();},2200);}
+function summary(){const t=T[s.lang],L=s.lang,sc=scores(),tot=sc.cf+sc.in+sc.rb;
+ return `${t.title} — ${t.bank}\n${s.name?s.name+'\n':''}${ORDER.map(d=>`${TXT[d][L].name}: ${num(sc[d])}/${num(15)} (${t.bands[band(sc[d])]})`).join('\n')}\n${t.totalLabel}: ${num(tot)}/${num(45)}`;}
+async function share(){const t=T[s.lang],text=summary();
+ try{if(navigator.share){await navigator.share({title:t.title,text});return;}}catch(e){if(e&&e.name==='AbortError')return;}
+ try{await navigator.clipboard.writeText(text);}catch(e){}
+ flash(t.copied);}
+async function download(){const t=T[s.lang],L=s.lang,ar=L==='ar',sc=scores(),tot=sc.cf+sc.in+sc.rb;
+ try{await document.fonts.ready;}catch(e){}
+ const W=1080,H=1350,cv=document.createElement('canvas');cv.width=W;cv.height=H;const x=cv.getContext('2d');
+ const F="'IBM Plex Sans Arabic',sans-serif";x.direction=ar?'rtl':'ltr';x.textAlign=ar?'right':'left';const X=ar?W-80:80;
+ x.fillStyle='#FBF7EE';x.fillRect(0,0,W,H);x.fillStyle='#006B3F';x.fillRect(0,0,W,300);
+ const draw=img=>{
+  if(img){x.fillStyle='#fff';const lx=ar?80:W-80-150;x.beginPath();x.roundRect?x.roundRect(lx,75,150,150,28):x.rect(lx,75,150,150);x.fill();x.drawImage(img,lx+5,80,140,140);}
+  x.fillStyle='#fff';x.font=`600 34px ${F}`;x.fillText(t.bank,X,120);x.font=`700 54px ${F}`;x.fillText(t.title,X,195);
+  if(s.name){x.font=`400 34px ${F}`;x.fillStyle='#CFE3D7';x.fillText(s.name,X,250);}
+  x.fillStyle='#14281D';x.font=`500 36px ${F}`;x.fillText(t.totalLabel,X,400);
+  x.fillStyle='#F39200';x.font=`700 150px ${F}`;x.fillText(`${num(tot)}/${num(45)}`,X,550);
+  ORDER.forEach((d,i)=>{const y=680+i*200,b=band(sc[d]);x.fillStyle='#14281D';x.font=`600 42px ${F}`;x.fillText(TXT[d][L].name,X,y);
+   x.textAlign=ar?'left':'right';x.font=`700 42px ${F}`;x.fillText(`${num(sc[d])}/${num(15)}`,ar?80:W-80,y);x.textAlign=ar?'right':'left';
+   x.fillStyle='#E6DCC8';x.fillRect(80,y+30,W-160,22);x.fillStyle=BAND[b];const w=(W-160)*sc[d]/15;x.fillRect(ar?W-80-w:80,y+30,w,22);
+   x.fillStyle='#5B5444';x.font=`500 30px ${F}`;x.fillText(t.bands[b],X,y+100);});
+  const a=document.createElement('a');a.download='NBE-CX-result.png';a.href=cv.toDataURL('image/png');document.body.appendChild(a);a.click();a.remove();flash(t.saved);};
+ const img=new Image();img.onload=()=>draw(img);img.onerror=()=>draw(null);img.src='nbe-logo.png';}
+
+app.addEventListener('input',e=>{if(e.target.id==='name')s.name=e.target.value;});
+app.addEventListener('click',e=>{
+ const el=e.target.closest('[data-a]');if(!el)return;
+ switch(el.dataset.a){
+  case 'lang':s.lang=s.lang==='ar'?'en':'ar';render();break;
+  case 'start':s.screen='q';s.idx=0;render();break;
+  case 'back':clearTimeout(advT);if(s.idx>0)s.idx--;else s.screen='intro';render();break;
+  case 'pick':s.answers[s.idx]=+el.dataset.v;render();clearTimeout(advT);
+   advT=setTimeout(()=>{if(s.idx<14)s.idx++;else s.screen='results';render();document.getElementById('main').scrollTop=0;},260);break;
+  case 'restart':s.screen='intro';s.idx=0;s.answers=Array(15).fill(null);render();break;
+  case 'share':share();break;
+  case 'download':download();break;
+ }
+});
+render();
+</script>
+</body>
+</html>
